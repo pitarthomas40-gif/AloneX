@@ -11,17 +11,19 @@ from pyrogram import idle
 from AloneX import (anon, app, config, db,
                    logger, stop, userbot, yt)
 from AloneX.plugins import all_modules
-import os
 from flask import Flask
+import threading
+
 app = Flask(__name__)
 
-@app.route('/')
-def hello():
-    return "Bot is Running!"
+@app.route("/")
+def home():
+    return "Bot is alive!"
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8080))
-    app.run(host='0.0.0.0', port=port)
+def run():
+    app.run(host="0.0.0.0", port=8080)
+
+threading.Thread(target=run).start()
   
 
 async def main():
