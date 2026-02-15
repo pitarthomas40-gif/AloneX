@@ -11,6 +11,29 @@ from pyrogram import idle
 from AloneX import (anon, app, config, db,
                    logger, stop, userbot, yt)
 from AloneX.plugins import all_modules
+import os
+import threading
+from flask import Flask
+
+# Flask का अलग नाम रखें ताकि Bot के 'app' से न टकराए
+web_app = Flask(__name__)
+
+@web_app.route('/')
+def health_check():
+    return "Bot is alive and running!"
+
+def run_server():
+    # Render डिफ़ॉल्ट रूप से 10000 पोर्ट इस्तेमाल करता है
+    port = int(os.environ.get("PORT", 10000))
+    web_app.run(host='0.0.0.0', port=port)
+
+# Flask को एक अलग धागे (Thread) में चलाएं
+threading.Thread(target=run_server, daemon=True).start()
+
+# --- इसके नीचे आपका बॉट शुरू करने वाला असली कोड रहेगा ---
+# उदाहरण के लिए: 
+# asyncio.get_event_loop().run_until_complete(main())
+
   
 
 async def main():
